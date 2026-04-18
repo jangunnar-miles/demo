@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1a1a2e">
+<title>Roma 2026 – LMM Studietur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0f0f1a;
+--bg2:#1a1a2e;
+--bg3:#252540;
+--surface:#2a2a45;
+--gold:#d4a84b;
+--gold-dim:#a07830;
+--cream:#f0e6d3;
+--text:#e8e0d4;
+--text-dim:#9a93a8;
+--accent-tues:#5b8a72;
+--accent-wed:#c17d4a;
+--accent-thu:#7b6ba5;
+--accent-fri:#4a7a8c;
+--accent-sat:#b85c5c;
+--radius:16px;
+--radius-sm:10px;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+font-family:'DM Sans',sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+-webkit-font-smoothing:antialiased;
+overflow-x:hidden;
+}
+
+/* ── Hero ── */
+.hero{
+position:relative;
+padding:60px 24px 40px;
+text-align:center;
+overflow:hidden;
+background:linear-gradient(170deg,#1a1a2e 0%,#2a1f3d 40%,#1e2a3a 70%,#1a1a2e 100%);
+}
+.hero::before{
+content:'';
+position:absolute;inset:0;
+background:radial-gradient(ellipse at 50% 0%,rgba(212,168,75,0.08) 0%,transparent 60%);
+}
+.hero-label{
+font-family:'Cormorant Garamond',serif;
+font-size:.85rem;letter-spacing:4px;text-transform:uppercase;
+color:var(--gold);margin-bottom:8px;position:relative;
+}
+.hero h1{
+font-family:'Cormorant Garamond',serif;
+font-size:2.8rem;font-weight:700;line-height:1.05;
+color:var(--cream);position:relative;margin-bottom:4px;
+}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{
+font-size:.9rem;color:var(--text-dim);position:relative;margin-top:8px;
+}
+.hero-dates{
+display:inline-block;margin-top:16px;
+padding:8px 20px;border:1px solid var(--gold-dim);border-radius:100px;
+font-size:.8rem;color:var(--gold);letter-spacing:1px;position:relative;
+}
+
+/* ── Navigation tabs ── */
+.nav-bar{
+position:sticky;top:0;z-index:100;
+background:rgba(15,15,26,0.92);
+backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+border-bottom:1px solid rgba(212,168,75,0.15);
+padding:0 8px;
+}
+.nav-tabs{
+display:flex;overflow-x:auto;gap:2px;
+scrollbar-width:none;-ms-overflow-style:none;
+padding:8px 0;
+}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{
+flex-shrink:0;
+padding:10px 16px;border-radius:10px;
+font-size:.78rem;font-weight:600;letter-spacing:.3px;
+color:var(--text-dim);background:transparent;
+border:none;cursor:pointer;transition:all .25s;
+white-space:nowrap;
+}
+.nav-tab.active{
+background:var(--surface);color:var(--gold);
+box-shadow:0 0 12px rgba(212,168,75,0.1);
+}
+.nav-tab:hover{color:var(--cream)}
+
+/* ── Sections ── */
+.section{display:none;padding:20px 16px 100px;animation:fadeUp .4s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ── Day headers ── */
+.day-header{
+padding:24px 20px;margin:0 -16px 20px;
+border-radius:0 0 var(--radius) var(--radius);
+position:relative;overflow:hidden;
+}
+.day-header::before{
+content:'';position:absolute;inset:0;opacity:.12;
+}
+.day-header[data-day="tir"]{background:linear-gradient(135deg,rgba(91,138,114,.25),transparent)}
+.day-header[data-day="ons"]{background:linear-gradient(135deg,rgba(193,125,74,.25),transparent)}
+.day-header[data-day="tor"]{background:linear-gradient(135deg,rgba(123,107,165,.25),transparent)}
+.day-header[data-day="fre"]{background:linear-gradient(135deg,rgba(74,122,140,.25),transparent)}
+.day-header[data-day="lor"]{background:linear-gradient(135deg,rgba(184,92,92,.25),transparent)}
+.day-label{
+font-family:'Cormorant Garamond',serif;
+font-size:.75rem;letter-spacing:3px;text-transform:uppercase;
+color:var(--gold);margin-bottom:4px;
+}
+.day-title{
+font-family:'Cormorant Garamond',serif;
+font-size:1.7rem;font-weight:700;color:var(--cream);line-height:1.2;
+}
+.day-theme{font-size:.82rem;color:var(--text-dim);margin-top:6px;font-style:italic}
+
+/* ── Timeline ── */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{
+content:'';position:absolute;left:8px;top:8px;bottom:8px;
+width:1px;background:linear-gradient(to bottom,var(--gold-dim),transparent);
+}
+.t-item{position:relative;margin-bottom:24px}
+.t-dot{
+position:absolute;left:-24px;top:6px;
+width:11px;height:11px;border-radius:50%;
+border:2px solid var(--gold-dim);background:var(--bg);
+}
+.t-item.highlight .t-dot{background:var(--gold);border-color:var(--gold)}
+.t-time{
+font-size:.72rem;font-weight:700;letter-spacing:1px;
+color:var(--gold);text-transform:uppercase;margin-bottom:3px;
+}
+.t-title{font-size:.95rem;font-weight:600;color:var(--cream);margin-bottom:3px}
+.t-desc{font-size:.82rem;color:var(--text-dim);line-height:1.5}
+.t-location{
+display:inline-flex;align-items:center;gap:5px;
+margin-top:6px;padding:4px 10px;
+background:rgba(212,168,75,0.08);border:1px solid rgba(212,168,75,0.15);
+border-radius:100px;font-size:.72rem;color:var(--gold);
+cursor:pointer;text-decoration:none;
+}
+.t-location svg{width:12px;height:12px;fill:var(--gold)}
+
+/* ── Walk badge ── */
+.walk-badge{
+display:inline-flex;align-items:center;gap:4px;
+margin-top:6px;margin-left:4px;padding:3px 10px;
+background:rgba(255,255,255,0.05);border-radius:100px;
+font-size:.7rem;color:var(--text-dim);
+}
+.walk-badge svg{width:11px;height:11px;fill:var(--text-dim)}
+
+/* ── Cards ── */
+.info-card{
+background:var(--surface);border-radius:var(--radius);
+padding:18px 18px;margin-bottom:14px;
+border:1px solid rgba(255,255,255,0.04);
+}
+.info-card h3{
+font-family:'Cormorant Garamond',serif;
+font-size:1.1rem;font-weight:700;color:var(--cream);margin-bottom:8px;
+}
+.info-card p,.info-card li{font-size:.84rem;color:var(--text-dim);line-height:1.6}
+.info-card ul{list-style:none;padding:0}
+.info-card li{padding:6px 0;padding-left:18px;position:relative}
+.info-card li::before{
+content:'';position:absolute;left:0;top:13px;
+width:6px;height:6px;border-radius:50%;background:var(--gold-dim);
+}
+
+/* ── Alert cards ── */
+.alert-card{
+background:rgba(212,168,75,0.06);
+border:1px solid rgba(212,168,75,0.2);
+border-radius:var(--radius);padding:16px 18px;margin-bottom:14px;
+}
+.alert-card .alert-icon{font-size:1.1rem;margin-bottom:6px}
+.alert-card h4{font-size:.88rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+.alert-card p{font-size:.82rem;color:var(--text-dim);line-height:1.55}
+
+/* ── Checklist ── */
+.checklist{margin-top:10px}
+.check-item{
+display:flex;align-items:flex-start;gap:12px;
+padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+.check-box{
+flex-shrink:0;width:22px;height:22px;border-radius:6px;
+border:2px solid var(--gold-dim);background:transparent;
+display:flex;align-items:center;justify-content:center;
+transition:all .2s;margin-top:1px;
+}
+.check-item.checked .check-box{
+background:var(--gold);border-color:var(--gold);
+}
+.check-box svg{width:13px;height:13px;fill:var(--bg);opacity:0;transition:opacity .15s}
+.check-item.checked .check-box svg{opacity:1}
+.check-text{font-size:.84rem;color:var(--text-dim);line-height:1.5}
+.check-item.checked .check-text{text-decoration:line-through;opacity:.5}
+
+/* ── Map embed ── */
+.map-container{
+border-radius:var(--radius);overflow:hidden;
+margin-bottom:14px;border:1px solid rgba(255,255,255,0.06);
+}
+.map-container iframe{width:100%;height:260px;border:0;filter:invert(90%) hue-rotate(180deg) brightness(1.1) contrast(.9)}
+
+/* ── Accordion ── */
+.accordion{margin-bottom:14px}
+.acc-header{
+display:flex;justify-content:space-between;align-items:center;
+padding:16px 18px;background:var(--surface);
+border-radius:var(--radius);cursor:pointer;
+border:1px solid rgba(255,255,255,0.04);
+transition:all .2s;
+}
+.acc-header.open{border-radius:var(--radius) var(--radius) 0 0;border-bottom-color:transparent}
+.acc-title{font-size:.9rem;font-weight:600;color:var(--cream)}
+.acc-arrow{
+width:20px;height:20px;fill:var(--text-dim);
+transition:transform .3s;flex-shrink:0;
+}
+.acc-header.open .acc-arrow{transform:rotate(180deg)}
+.acc-body{
+display:none;padding:14px 18px 18px;
+background:var(--surface);border:1px solid rgba(255,255,255,0.04);border-top:0;
+border-radius:0 0 var(--radius) var(--radius);
+}
+.acc-body.open{display:block}
+.acc-body p,.acc-body li{font-size:.82rem;color:var(--text-dim);line-height:1.6}
+.acc-body ul{list-style:none;padding:0}
+.acc-body li{padding:5px 0 5px 16px;position:relative}
+.acc-body li::before{content:'·';position:absolute;left:0;color:var(--gold)}
+
+/* ── Quick-info grid ── */
+.qi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.qi-item{
+background:var(--surface);border-radius:var(--radius-sm);
+padding:16px 14px;text-align:center;
+border:1px solid rgba(255,255,255,0.04);
+}
+.qi-icon{font-size:1.4rem;margin-bottom:6px}
+.qi-label{font-size:.68rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:2px}
+.qi-value{font-size:.88rem;font-weight:600;color:var(--cream)}
+
+/* ── Footer ── */
+.footer{
+text-align:center;padding:30px 16px 50px;
+font-size:.72rem;color:var(--text-dim);
+opacity:.5;
+}
+
+/* ── Utilities ── */
+.mt-16{margin-top:16px}
+.mb-8{margin-bottom:8px}
+.section-title{
+font-family:'Cormorant Garamond',serif;
+font-size:1.3rem;font-weight:700;color:var(--cream);
+margin:24px 0 14px;
+}
+.divider{
+height:1px;background:linear-gradient(to right,transparent,var(--gold-dim),transparent);
+margin:24px 0;opacity:.3;
+}
+</style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<div class="hero">
+<div class="hero-label">BI Executive Master · LMM</div>
+<h1>Samling V<br><em>Roma</em></h1>
+<div class="hero-sub">Benchmarking antikkens Roma – Ledelse og ekstrem resultatoppnåelse</div>
+<div class="hero-dates">21 – 25 April 2026</div>
+</div>
+
+<!-- ── Navigation ── -->
+<nav class="nav-bar">
+<div class="nav-tabs" id="navTabs">
+<button class="nav-tab active" data-tab="oversikt">Oversikt</button>
+<button class="nav-tab" data-tab="tirsdag">Tirsdag</button>
+<button class="nav-tab" data-tab="onsdag">Onsdag</button>
+<button class="nav-tab" data-tab="torsdag">Torsdag</button>
+<button class="nav-tab" data-tab="fredag">Fredag</button>
+<button class="nav-tab" data-tab="lordag">Lørdag</button>
+<button class="nav-tab" data-tab="pakke">Pakkeliste</button>
+<button class="nav-tab" data-tab="tips">Tips</button>
+</div>
+</nav>
+
+<!-- ═══════════════ OVERSIKT ═══════════════ -->
+<section class="section active" id="oversikt">
+
+<div class="qi-grid">
+<div class="qi-item"><div class="qi-icon">🏨</div><div class="qi-label">Hotell</div><div class="qi-value">Hotel Nazionale</div></div>
+<div class="qi-item"><div class="qi-icon">📍</div><div class="qi-label">Beliggenhet</div><div class="qi-value">Piazza Montecitorio</div></div>
+<div class="qi-item"><div class="qi-icon">👨‍🏫</div><div class="qi-label">Forelesere</div><div class="qi-value">Bjartveit & Wong</div></div>
+<div class="qi-item"><div class="qi-icon">📖</div><div class="qi-label">Tema</div><div class="qi-value">Karismatisk ledelse</div></div>
+</div>
+
+<div class="map-container">
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11882.5!2d12.477!3d41.895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f604b2bc9bd1b%3A0x95df77b5a669914a!2sHotel%20Nazionale%20Roma!5e0!3m2!1sen!2sit!4v1700000000000!5m2!1sen!2sit" allowfullscreen loading="lazy"></iframe>
+</div>
+
+<div class="section-title">Avstander fra hotellet</div>
+
+<div class="info-card">
+<ul>
+<li><strong>Enoteca Capranica</strong> – 1 min 🟢</li>
+<li><strong>Palazzo Altemps</strong> – 5 min 🟢</li>
+<li><strong>Forum Romanum</strong> – 15 min 🟡</li>
+<li><strong>Museo Capitolini</strong> – 15 min 🟡</li>
+<li><strong>Palatinhøyden</strong> – 15 min 🟡</li>
+<li><strong>Colosseum</strong> – 20 min 🟡</li>
+<li><strong>Caracallas termer</strong> – 30 min 🟠</li>
+<li><strong>Vatikanmuseet</strong> – 30 min 🟠</li>
+<li><strong>Roof Garden Hotel Forum</strong> – 18 min 🟡</li>
+</ul>
+</div>
+
+<div class="alert-card">
+<div class="alert-icon">🇮🇹</div>
+<h4>Lørdag 25. april – Festa della Liberazione</h4>
+<p>Nasjonal frigjøringsdag. Ikke som 17. mai – en lavmælt, høytidelig markering. Museer og restauranter holder åpent som normalt. Noen butikker kan ha stengt, og kollektivtransporten kjører søndagsruter. Hovedseremoni kl. 09 ved Altare della Patria (Piazza Venezia) – kolliderer ikke med programmet.</p>
+</div>
+
+<div class="alert-card">
+<div class="alert-icon">💡</div>
+<h4>Strøm & betaling</h4>
+<p>Italia bruker samme stikkontakt som Norge (Type C/F) – ingen adapter nødvendig. Apple Pay fungerer nesten overalt. Ha 50–100 € kontanter som backup for gatekjøkken og småkafeer.</p>
+</div>
+</section>
+
+<!-- ═══════════════ TIRSDAG ═══════════════ -->
+<section class="section" id="tirsdag">
+<div class="day-header" data-day="tir">
+<div class="day-label">Tirsdag 21. april</div>
+<div class="day-title">Roma – Verdensbyen</div>
+<div class="day-theme">Leadership as storytelling · Meningsskapende ledelse</div>
+</div>
+
+<div class="timeline">
+<div class="t-item highlight">
+<div class="t-dot"></div>
+<div class="t-time">14:30</div>
+<div class="t-title">Fingermat og mingling</div>
+<div class="t-desc">Hotel Nazionale, Sala Cristallo</div>
+<span class="walk-badge"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 5L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.9-.7"/></svg>I hotellet</span>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">15:00 – 17:30</div>
+<div class="t-title">Forelesning</div>
+<div class="t-desc">Roma – verdensbyen. Leadership as storytelling – ledelse som en meningsskapende aktivitet.</div>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">17:45 – 19:15</div>
+<div class="t-title">Byvandring</div>
+<div class="t-desc">Guidet byvandring med Steinar Bjartveit</div>
+</div>
+
+<div class="t-item highlight">
+<div class="t-dot"></div>
+<div class="t-time">19:30</div>
+<div class="t-title">Velkomstmiddag</div>
+<div class="t-desc">Enoteca Capranica – Piazza Capranica, 104</div>
+<a class="t-location" href="https://maps.google.com/?q=Enoteca+Taverna+Capranica+Rome" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Åpne i kart</a>
+<span class="walk-badge"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 5L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.9-.7"/></svg>1 min fra hotellet</span>
+</div>
+</div>
+
+<div class="alert-card mt-16">
+<div class="alert-icon">☀️</div>
+<h4>Første dag – ta det med ro</h4>
+<p>Programmet starter kl. 14:30, så du har god tid til å sjekke inn, orientere deg og spise lunsj. Hotellet ligger midt i sentrum – utforsk nabolaget.</p>
+</div>
+</section>
+
+<!-- ═══════════════ ONSDAG ═══════════════ -->
+<section class="section" id="onsdag">
+<div class="day-header" data-day="ons">
+<div class="day-label">Onsdag 22. april</div>
+<div class="day-title">Palazzo Altemps & Caracalla</div>
+<div class="day-theme">Forelesning · Omvisning · Gruppearbeid</div>
+</div>
+
+<div class="timeline">
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">09:00 – 11:30</div>
+<div class="t-title">Forelesning</div>
+<div class="t-desc">Hotel Nazionale</div>
+<span class="walk-badge"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 5L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.9-.7"/></svg>I hotellet</span>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">11:30 – 13:00</div>
+<div class="t-title">Palazzo Altemps</div>
+<div class="t-desc">Piazza di Sant'Apollinare, 46. Renessansepalass med antikke skulpturer.</div>
+<a class="t-location" href="https://maps.google.com/?q=Palazzo+Altemps+Rome" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Åpne i kart</a>
+<span class="walk-badge"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 5L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.9-.7"/></svg>5 min fra hotellet</span>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">13:00 – 14:30</div>
+<div class="t-title">Lunsj og gruppearbeid</div>
+<div class="t-desc">Mange gode lunsjsteder rundt Piazza Navona</div>
+</div>
+
+<div class="t-item highlight">
+<div class="t-dot"></div>
+<div class="t-time">14:30 – 17:30</div>
+<div class="t-title">Caracallas termer</div>
+<div class="t-desc">Omvisning, forelesning og gruppearbeid. Viale delle Terme di Caracalla.</div>
+<a class="t-location" href="https://maps.google.com/?q=Baths+of+Caracalla+Rome" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Åpne i kart</a>
+<span class="walk-badge"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 5L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.9-.7"/></svg>30 min gange / 10 min taxi</span>
+</div>
+</div>
+
+<div class="alert-card mt-16">
+<div class="alert-icon">🥾</div>
+<h4>Mye gåing i dag</h4>
+<p>Caracallas termer er et stort utendørsområde med ujevnt underlag. Ha gode sko og ta med vann. Vurder taxi dit – det er en grei tur sørover fra sentrum.</p>
+</div>
+</section>
+
+<!-- ═══════════════ TORSDAG ═══════════════ -->
+<section class="section" id="torsdag">
+<div class="day-header" data-day="tor">
+<div class="day-label">Torsdag 23. april</div>
+<div class="day-title">Vatikanet & Colosseum</div>
+<div class="day-theme">Defining moments · Brød og sirkus</div>
+</div>
+
+<div class="alert-card">
+<div class="alert-icon">⏰</div>
+<h4>Tidlig start!</h4>
+<p>Oppmøte kl. 07:55 utenfor Vatikanmuseet. Ca. 30 min gange fra hotellet, anbefaler taxi senest 07:40. Hvis du går, start senest 07:25.</p>
+</div>
+
+<div class="timeline">
+<div class="t-item highlight">
+<div class="t-dot"></div>
+<div class="t-time">07:55</div>
+<div class="t-title">Oppmøte – Vatikanmuseet</div>
+<div class="t-desc">Møt utenfor inngangen til Museum Vatican</div>
+<a class="t-location" href="https://maps.google.com/?q=Vatican+Museums+entrance" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Åpne i kart</a>
+<span class="walk-badge"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 5L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.9-.7"/></svg>30 min / taxi anbefalt</span>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">08:00 – 10:30</div>
+<div class="t-title">Museum Vatican</div>
+<div class="t-desc">Guidet omvisning</div>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">10:30 – 12:00</div>
+<div class="t-title">Lunsj</div>
+<div class="t-desc">I nærheten av Vatikanet eller tilbake mot sentrum</div>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">12:00 – 14:30</div>
+<div class="t-title">Forelesning</div>
+<div class="t-desc">Hotel Nazionale</div>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">14:30 – 17:00</div>
+<div class="t-title">Gruppearbeid</div>
+<div class="t-desc">«Defining moments» – arbeid i grupper</div>
+</div>
+
+<div class="t-item highlight">
+<div class="t-dot"></div>
+<div class="t-time">17:00 – 18:00</div>
+<div class="t-title">Colosseum – Brød og sirkus</div>
+<div class="t-desc">Møt ved gruppeinngangen til Colosseum</div>
+<a class="t-location" href="https://maps.google.com/?q=Colosseum+Rome" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Åpne i kart</a>
+<span class="walk-badge"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 5L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.9-.7"/></svg>20 min fra hotellet</span>
+</div>
+</div>
+</section>
+
+<!-- ═══════════════ FREDAG ═══════════════ -->
+<section class="section" id="fredag">
+<div class="day-header" data-day="fre">
+<div class="day-label">Fredag 24. april</div>
+<div class="day-title">Forum, Motfortellinger & Hadrian</div>
+<div class="day-theme">Der Julius Cæsar faller · Marcus Aurelius</div>
+</div>
+
+<div class="alert-card">
+<div class="alert-icon">📚</div>
+<h4>Husk å ta med!</h4>
+<p><strong>Brevene</strong> til deg selv (skrevet på tidligere samlinger) OG <strong>boken</strong> «Til meg selv» av Marcus Aurelius til Hadrians Villa.</p>
+</div>
+
+<div class="timeline">
+<div class="t-item highlight">
+<div class="t-dot"></div>
+<div class="t-time">09:00 – 10:00</div>
+<div class="t-title">Forum Romanum</div>
+<div class="t-desc">Der Julius Cæsar faller. Inngang Via dei Fori Imperiali.</div>
+<a class="t-location" href="https://maps.google.com/?q=Roman+Forum+Via+dei+Fori+Imperiali" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Åpne i kart</a>
+<span class="walk-badge"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 5L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.9-.7"/></svg>15 min fra hotellet</span>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">10:00 – 12:15</div>
+<div class="t-title">Gruppearbeid – Motfortellinger</div>
+<div class="t-desc">Arbeid i grupper om motfortellinger</div>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">12:15 – 13:45</div>
+<div class="t-title">Lunsj</div>
+<div class="t-desc">Utnyttett tid før bussavgang</div>
+</div>
+
+<div class="t-item highlight">
+<div class="t-dot"></div>
+<div class="t-time">13:45</div>
+<div class="t-title">Bussavgang til Hadrians villa</div>
+<div class="t-desc">Samlet avgang fra hotellet. Ca. 45–60 min kjøretid til Tivoli.</div>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">15:00 – 16:30</div>
+<div class="t-title">Omvisning – Hadrians villa</div>
+<div class="t-desc">Med fokus på Marcus Aurelius. Ta med boken!</div>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">16:30 – 18:30</div>
+<div class="t-title">Gruppearbeid</div>
+<div class="t-desc">Ved Hadrians villa</div>
+</div>
+
+<div class="t-item highlight">
+<div class="t-dot"></div>
+<div class="t-time">18:30</div>
+<div class="t-title">Oppsummering & middag</div>
+<div class="t-desc">Villa Esedra – bespisning og oppsummering</div>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">21:30</div>
+<div class="t-title">Buss tilbake til Roma</div>
+<div class="t-desc">Ankomst Roma ca. 22:15. Lang dag – slapp av på bussen.</div>
+</div>
+</div>
+
+<div class="alert-card mt-16">
+<div class="alert-icon">🌡️</div>
+<h4>Lang utendørsdag</h4>
+<p>Dere er ute hele ettermiddagen i Tivoli. Ha med solkrem, hatt/caps, og vannflaske. April i Roma kan bli 20–25°C.</p>
+</div>
+</section>
+
+<!-- ═══════════════ LØRDAG ═══════════════ -->
+<section class="section" id="lordag">
+<div class="day-header" data-day="lor">
+<div class="day-label">Lørdag 25. april</div>
+<div class="day-title">Palatinen & Capitolini</div>
+<div class="day-theme">Der fortellingen slutter · Der trådene samles</div>
+</div>
+
+<div class="alert-card">
+<div class="alert-icon">🇮🇹</div>
+<h4>Festa della Liberazione</h4>
+<p>Nasjonal fridag – men museer holder åpent. Noen butikker kan være stengt. Kollektivtransport på søndagsrute.</p>
+</div>
+
+<div class="timeline">
+<div class="t-item highlight">
+<div class="t-dot"></div>
+<div class="t-time">09:00 – 11:00</div>
+<div class="t-title">Palatinhøyden</div>
+<div class="t-desc">Der fortellingen slutter.</div>
+<a class="t-location" href="https://maps.google.com/?q=Palatine+Hill+Rome" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Åpne i kart</a>
+<span class="walk-badge"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 5L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.9-.7"/></svg>15 min fra hotellet</span>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">11:00 – 13:30</div>
+<div class="t-title">Lunsj og gruppearbeid</div>
+<div class="t-desc">Siste gruppearbeid – nyt en lang lunsj</div>
+</div>
+
+<div class="t-item">
+<div class="t-dot"></div>
+<div class="t-time">13:30 / 14:30</div>
+<div class="t-title">Museo Capitolini</div>
+<div class="t-desc">Der trådene samles. To grupper: 13:30 og 14:30. Piazza del Campidoglio, 1.</div>
+<a class="t-location" href="https://maps.google.com/?q=Capitoline+Museums+Rome" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Åpne i kart</a>
+<span class="walk-badge"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 5L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.9-.7"/></svg>15 min fra hotellet</span>
+</div>
+
+<div class="t-item highlight">
+<div class="t-dot"></div>
+<div class="t-time">20:00</div>
+<div class="t-title">Avskjedsmiddag</div>
+<div class="t-desc">Ristorante Roof Garden – Hotel Forum. Utsikt over Forum Romanum og Colosseum.</div>
+<a class="t-location" href="https://maps.google.com/?q=Ristorante+Roof+Garden+Hotel+Forum+Rome" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Åpne i kart</a>
+<span class="walk-badge"><svg viewBox="0 0 24 24"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 5L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.9-.7"/></svg>18 min fra hotellet</span>
+</div>
+</div>
+</section>
+
+<!-- ═══════════════ PAKKELISTE ═══════════════ -->
+<section class="section" id="pakke">
+<div class="section-title">Pakkeliste & huskeliste</div>
+
+<div class="info-card">
+<h3>📚 Akademisk</h3>
+<div class="checklist" id="cl-akademisk">
+<div class="check-item" data-key="c1"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">«Til meg selv» av Marcus Aurelius</div></div>
+<div class="check-item" data-key="c2"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Brevene til deg selv (fra tidligere samlinger)</div></div>
+<div class="check-item" data-key="c3"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Notatblokk/iPad for gruppearbeid</div></div>
+<div class="check-item" data-key="c4"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Penner</div></div>
+</div>
+</div>
+
+<div class="info-card">
+<h3>👟 Klær & sko</h3>
+<div class="checklist" id="cl-klaer">
+<div class="check-item" data-key="c5"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Gode gåsko (ujevnt underlag daglig!)</div></div>
+<div class="check-item" data-key="c6"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Pent antrekk til middager</div></div>
+<div class="check-item" data-key="c7"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Lett jakke / regnjakke (april-vær)</div></div>
+<div class="check-item" data-key="c8"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Solbriller og caps/hatt</div></div>
+<div class="check-item" data-key="c9"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Dekk skuldrene (Vatikanet krever det)</div></div>
+</div>
+</div>
+
+<div class="info-card">
+<h3>🎒 Daglig med i sekken</h3>
+<div class="checklist" id="cl-daglig">
+<div class="check-item" data-key="c10"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Vannflaske (fyll på nasoni-fontener)</div></div>
+<div class="check-item" data-key="c11"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Solkrem</div></div>
+<div class="check-item" data-key="c12"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Lader / powerbank</div></div>
+<div class="check-item" data-key="c13"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Litt kontanter (50–100 €)</div></div>
+</div>
+</div>
+
+<div class="info-card">
+<h3>📱 Digitalt</h3>
+<div class="checklist" id="cl-digitalt">
+<div class="check-item" data-key="c14"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Last ned Roma offline-kart (Google/Apple Maps)</div></div>
+<div class="check-item" data-key="c15"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Sjekk at Apple Pay er satt opp</div></div>
+<div class="check-item" data-key="c16"><div class="check-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div><div class="check-text">Kredittkort som backup</div></div>
+</div>
+</div>
+</section>
+
+<!-- ═══════════════ TIPS ═══════════════ -->
+<section class="section" id="tips">
+<div class="section-title">Praktiske tips</div>
+
+<div class="accordion">
+<div class="acc-header" onclick="toggleAcc(this)">
+<span class="acc-title">🚰 Gratis drikkevann</span>
+<svg class="acc-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+</div>
+<div class="acc-body">
+<p>Roma har hundrevis av <em>nasoni</em> – små drikkefontener med rent springvann. Fyll vannflasken gratis overalt i byen. Du kjenner dem igjen som små støpejerns-søyler med rennende vann.</p>
+</div>
+</div>
+
+<div class="accordion">
+<div class="acc-header" onclick="toggleAcc(this)">
+<span class="acc-title">🍝 Spising</span>
+<svg class="acc-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+</div>
+<div class="acc-body">
+<p>Unngå restaurantene rett ved turistattraksjoner – gå én sidegate bort for bedre mat til halv pris. Klassiske retter å prøve:</p>
+<ul>
+<li>Cacio e Pepe – pasta med pecorino og pepper</li>
+<li>Carbonara – den ekte, uten fløte</li>
+<li>Supplì – friterte risboller</li>
+<li>Trapizzino – street food-favoritt</li>
+</ul>
+</div>
+</div>
+
+<div class="accordion">
+<div class="acc-header" onclick="toggleAcc(this)">
+<span class="acc-title">🚇 Transport</span>
+<svg class="acc-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+</div>
+<div class="acc-body">
+<p>Metro og buss støtter kontaktløs betaling – bare hold telefonen mot leseren. Roma er overraskende gåvennlig fra Hotel Nazionale – det meste er innenfor 20 min.</p>
+<p style="margin-top:8px">Taxi-tips: Bruk kun hvite, lisensierte taxier. Uber fungerer også. Faste priser fra/til Fiumicino: €50.</p>
+</div>
+</div>
+
+<div class="accordion">
+<div class="acc-header" onclick="toggleAcc(this)">
+<span class="acc-title">🔒 Sikkerhet</span>
+<svg class="acc-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+</div>
+<div class="acc-body">
+<p>Vær obs på lommetyver, spesielt:</p>
+<ul>
+<li>På metro (spesielt linje A og B)</li>
+<li>Rundt Termini-stasjonen</li>
+<li>Ved Colosseum og Forum</li>
+<li>I kø til Vatikanmuseet</li>
+</ul>
+<p style="margin-top:8px">Hold telefon og kort foran på kroppen, gjerne i en lukket lomme.</p>
+</div>
+</div>
+
+<div class="accordion">
+<div class="acc-header" onclick="toggleAcc(this)">
+<span class="acc-title">⚡ Strøm & nett</span>
+<svg class="acc-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+</div>
+<div class="acc-body">
+<p>Italia bruker Type C/F stikkontakter – identisk med Norge. Ingen adapter nødvendig. Spenning: 230V / 50Hz. EU-roaming gjelder – mobilen fungerer som hjemme.</p>
+</div>
+</div>
+
+<div class="accordion">
+<div class="acc-header" onclick="toggleAcc(this)">
+<span class="acc-title">🌤️ Vær i april</span>
+<svg class="acc-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+</div>
+<div class="acc-body">
+<p>Typisk 15–22°C, men kan nå 25°C i sola. Morgenene kan være kjølige (10–12°C). Ha med en lett jakke og lag-på-lag. Regnsjansen er moderat – ta med en kompakt regnjakke.</p>
+</div>
+</div>
+
+<div class="accordion">
+<div class="acc-header" onclick="toggleAcc(this)">
+<span class="acc-title">👔 Kleskode Vatikanet</span>
+<svg class="acc-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+</div>
+<div class="acc-body">
+<p>Vatikanmuseet krever at skuldrene er dekket og at bukser/skjørt går til knærne. Singlet, shorts og flip-flops er ikke tillatt. Dette gjelder torsdag morgen.</p>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="info-card">
+<h3>Nødnumre</h3>
+<ul>
+<li><strong>Nødnummer Italia:</strong> 112</li>
+<li><strong>Norsk ambassade Roma:</strong> +39 06 45 23 81 00</li>
+<li><strong>Hotel Nazionale:</strong> +39 06 695 001</li>
+</ul>
+</div>
+</section>
+
+<div class="footer">
+LMM Roma 2026 · Laget med ❤️ og Claude
+</div>
+
+<script>
+// ── Tab navigation ──
+const tabs=document.querySelectorAll('.nav-tab');
+const sections=document.querySelectorAll('.section');
+tabs.forEach(tab=>{
+tab.addEventListener('click',()=>{
+const target=tab.dataset.tab;
+tabs.forEach(t=>t.classList.remove('active'));
+tab.classList.add('active');
+sections.forEach(s=>{
+s.classList.remove('active');
+if(s.id===target)s.classList.add('active');
+});
+window.scrollTo({top:0,behavior:'instant'});
+});
+});
+
+// ── Checklist persistence ──
+function loadChecks(){
+try{
+const saved=JSON.parse(localStorage.getItem('roma26-checks')||'{}');
+document.querySelectorAll('.check-item').forEach(item=>{
+if(saved[item.dataset.key])item.classList.add('checked');
+});
+}catch(e){}
+}
+function saveChecks(){
+const state={};
+document.querySelectorAll('.check-item').forEach(item=>{
+if(item.classList.contains('checked'))state[item.dataset.key]=true;
+});
+try{localStorage.setItem('roma26-checks',JSON.stringify(state));}catch(e){}
+}
+document.querySelectorAll('.check-item').forEach(item=>{
+item.addEventListener('click',()=>{
+item.classList.toggle('checked');
+saveChecks();
+});
+});
+loadChecks();
+
+// ── Accordion ──
+function toggleAcc(header){
+const body=header.nextElementSibling;
+const isOpen=header.classList.contains('open');
+// Close all
+document.querySelectorAll('.acc-header').forEach(h=>{
+h.classList.remove('open');
+h.nextElementSibling.classList.remove('open');
+});
+if(!isOpen){
+header.classList.add('open');
+body.classList.add('open');
+}
+}
+
+// ── Scroll active tab into view ──
+const navContainer=document.getElementById('navTabs');
+tabs.forEach(tab=>{
+tab.addEventListener('click',()=>{
+tab.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+});
+});
+</script>
+</body>
+</html>
